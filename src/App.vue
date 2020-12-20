@@ -249,7 +249,7 @@ body {
 }
 
 button {
-  padding: 3px 8px;
+  padding: 8px 12px;
   font-weight: normal;
   font-size: 0.8em;
   font-family: 'Source Code Pro';
@@ -275,7 +275,7 @@ button {
 }
 
 .game-controls button.lr-buttons {
-  margin: 6px;
+  margin: 8px;
 }
 
 .scores {
