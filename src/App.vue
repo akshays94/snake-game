@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <section class="scores">
-            POINTS: {{ points }} | HIGHEST: {{ maxPoints }}
+            POINTS: {{ score }} | HIGHEST: {{ maxScore }}
         </section>
 
         <section class="board">
@@ -79,8 +79,8 @@ export default {
             appleLocation: [-1, -1],
             snakeDirection: 'RIGHT',
             gameInterval: null,
-            points: 0,
-            maxPoints: 0,
+            score: 0,
+            maxScore: 0,
 
             isGameStarted: false,
             isGameOver: false
@@ -168,18 +168,24 @@ export default {
 
         getNewSnakeHead(oldSnakeHead) {
             let oldSnakeHeadRow = oldSnakeHead[0];
-            let newSnakeHeadCol = oldSnakeHead[1];
+            let oldSnakeHeadCol = oldSnakeHead[1];
 
-            if (this.snakeDirection === 'RIGHT')
-                newSnakeHeadCol += 1;
-            else if (this.snakeDirection === 'LEFT')
-                newSnakeHeadCol -= 1;
-            else if (this.snakeDirection === 'DOWN')
-                oldSnakeHeadRow += 1;
-            else if (this.snakeDirection === 'UP')
-                oldSnakeHeadRow -= 1;
+            switch(this.snakeDirection) {
+                case 'RIGHT':
+                    oldSnakeHeadCol += 1;
+                    break;
+                case 'LEFT':
+                    oldSnakeHeadCol -= 1;
+                    break;
+                case 'DOWN':
+                    oldSnakeHeadRow += 1;
+                    break;
+                case 'UP':
+                    oldSnakeHeadRow -= 1;
+                    break;
+            }
 
-            return [oldSnakeHeadRow, newSnakeHeadCol];
+            return [oldSnakeHeadRow, oldSnakeHeadCol];
         },
 
         isSnakeHeadOutOfGrid(snakeHead) {
@@ -221,13 +227,8 @@ export default {
                     newSnakeHead[0] === this.appleLocation[0]
                     && newSnakeHead[1] === this.appleLocation[1]
 
-                if (isAppleEaten) {
-                    this.getRandomAppleLocation();
-                    this.points += 1;
-                }
-
                 for (let i = this.snakeLocation.length - 2; i >= 0; i--) {
-                    let currentSnakeLocation = this.snakeLocation[i];
+                  let currentSnakeLocation = this.snakeLocation[i];
                     let oldCurrentSnakeLocation 
                         = [currentSnakeLocation[0], currentSnakeLocation[1]];
 
@@ -237,6 +238,8 @@ export default {
                 }
 
                 if (isAppleEaten) {
+                    this.getRandomAppleLocation();
+                    this.score += 1;
                     this.snakeLocation.unshift(prevLocation);
                 }
             }
@@ -270,11 +273,11 @@ export default {
             this.getRandomAppleLocation();
             this.snakeDirection = 'RIGHT';
 
-            if (this.maxPoints < this.points) {
-                this.maxPoints = this.points
+            if (this.maxScore < this.score) {
+                this.maxScore = this.score
             }
 
-            this.points = 0;
+            this.score = 0;
         },
 
         changeDirection(newDirection) {
